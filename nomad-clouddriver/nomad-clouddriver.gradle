@@ -1,0 +1,72 @@
+buildscript {
+  ext.kotlin_version = '1.3.50'
+
+  repositories {
+    mavenCentral()
+  }
+  dependencies {
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+  }
+}
+apply plugin: "io.spinnaker.plugin.service-extension"
+apply plugin: "maven-publish"
+apply plugin: 'kotlin'
+apply plugin: 'kotlin-kapt'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+  mavenCentral()
+  jcenter()
+  maven { url "http://dl.bintray.com/spinnaker/spinnaker/" }
+}
+
+spinnakerPlugin {
+  serviceName = "clouddriver"
+  pluginClass = "io.armory.plugin.nomad.NomadPlugin"
+}
+
+dependencies {
+  compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+  compileOnly (group: 'org.springframework', name: 'spring-context', version: '5.2.1.RELEASE')
+  compileOnly (group: 'org.springframework', name: 'spring-web', version: '5.2.2.RELEASE')
+  compileOnly (group: 'org.springframework.boot', name: 'spring-boot', version: '2.2.4.RELEASE')
+  compileOnly (group: 'com.netflix.spinnaker.kork', name: 'kork-plugins-spring-api', version: "${korkVersion}")  {
+    exclude (group: 'org.springframework.boot')
+  }
+  compileOnly (group: 'com.netflix.spinnaker.clouddriver', name: 'clouddriver-core', version: "${clouddriverVersion}") {
+    exclude (group: 'org.codehaus.groovy')
+    exclude (group: 'com.netflix.spinnaker.kork', module: 'kork-plugins')
+    exclude (group: 'com.netflix.spinnaker.kork', module: 'kork-plugins-api')
+  }
+  compileOnly (group: 'com.netflix.spinnaker.clouddriver', name: 'clouddriver-security', version: "${clouddriverVersion}")
+  compileOnly (group: 'com.netflix.spinnaker.clouddriver', name: 'cats-core', version: "${clouddriverVersion}") {
+    exclude (group: 'com.netflix.spinnaker.clouddriver', module: 'clouddriver-core')
+  }
+  compileOnly (group: 'com.netflix.spectator', name: 'spectator-api', version: "0.103.0")
+
+  implementation group: 'com.hashicorp.nomad', name: 'nomad-sdk', version: '0.11.2.0'
+
+
+  testImplementation (group: 'com.netflix.spinnaker.clouddriver', name: 'clouddriver-core', version: "${clouddriverVersion}") {
+    exclude (group: 'org.codehaus.groovy')
+    exclude (group: 'com.netflix.spinnaker.kork', module: 'kork-plugins')
+    exclude (group: 'com.netflix.spinnaker.kork', module: 'kork-plugins-api')
+  }
+  compileOnly (group: 'com.netflix.spinnaker.clouddriver', name: 'clouddriver-security', version: "${clouddriverVersion}")
+  testImplementation (group: 'com.netflix.spinnaker.clouddriver', name: 'cats-core', version: "${clouddriverVersion}") {
+    exclude (group: 'com.netflix.spinnaker.clouddriver', module: 'clouddriver-core')
+  }
+
+  testImplementation "org.junit.jupiter:junit-jupiter-api:5.3.2"
+  testImplementation group: 'io.strikt', name: 'strikt-core', version: '0.22.1'
+  testImplementation group: 'dev.minutest', name: 'minutest', version: '1.10.0'
+
+  testRuntime "org.junit.jupiter:junit-jupiter-engine:5.3.2"
+  testRuntime "org.junit.platform:junit-platform-launcher:1.3.2"
+}
+
+tasks.withType(Test) {
+  useJUnitPlatform()
+}
