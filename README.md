@@ -41,7 +41,7 @@ Currently this plugin allows reading Nomad jobs with a Clouddriver caching agent
 <h3>View Jobs</h3>
 GET `<clouddriver url>/cache/nomad/job`
 returns something like this:
-```
+```json
 [{
 	"account": "account1",
 	"details": {
@@ -88,7 +88,7 @@ returns something like this:
 ```
 <h3>Upsert Job</h3>
 POST the following to `<clouddriver url>/nomad/ops/runJob`
-```
+```json
 {
 	"credentials": "account1",
 	"job": {
