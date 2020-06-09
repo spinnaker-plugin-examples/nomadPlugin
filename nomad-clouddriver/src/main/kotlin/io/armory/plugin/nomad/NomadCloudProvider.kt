@@ -1,6 +1,5 @@
 package io.armory.plugin.nomad
 
-import com.netflix.spinnaker.cats.agent.Agent
 import com.netflix.spinnaker.cats.agent.AgentProvider
 import com.netflix.spinnaker.cats.agent.AgentSchedulerAware
 import com.netflix.spinnaker.cats.cache.Cache
@@ -8,7 +7,6 @@ import com.netflix.spinnaker.clouddriver.cache.SearchableProvider
 import com.netflix.spinnaker.clouddriver.cache.SearchableProvider.SearchableResource
 import com.netflix.spinnaker.clouddriver.core.CloudProvider
 import java.util.*
-import java.util.concurrent.ConcurrentHashMap
 
 class NomadCloudProvider(agentProviders: Collection<AgentProvider>) : AgentSchedulerAware(), SearchableProvider, CloudProvider {
 

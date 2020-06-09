@@ -18,7 +18,7 @@ spinnaker:
 
 nomad:
   accounts:
-    - name: myLaptop
+    - name: account1
       environment: dev
       address: http://127.0.0.1:4646
 ```
@@ -33,3 +33,123 @@ To debug the plugin inside a Spinnaker service (like Orca) using IntelliJ Idea f
 4) Configure the Spinnaker service the same way specified above.
 5) Create a new IntelliJ run configuration for the service that has the VM option `-Dpf4j.mode=development` and does a `Build Project` before launch.
 6) Debug away...
+
+<h2>Features</h2>
+
+Currently this plugin allows reading Nomad jobs with a Clouddriver caching agent and modifying Nomad jobs with a Clouddriver atomic operation.
+
+<h3>View Jobs</h3>
+GET `<clouddriver url>/cache/nomad/job`
+returns something like this:
+```
+[{
+	"account": "account1",
+	"details": {
+		"CreateIndex": 11,
+		"Datacenters": [
+			"dc1"
+		],
+		"ID": "example",
+		"JobModifyIndex": 845,
+		"JobSummary": {
+			"Children": {
+				"Dead": 0,
+				"Pending": 0,
+				"Running": 0
+			},
+			"CreateIndex": 11,
+			"JobID": "example",
+			"ModifyIndex": 849,
+			"Namespace": "default",
+			"Summary": {
+				"cache": {
+					"Complete": 1,
+					"Failed": 0,
+					"Lost": 0,
+					"Queued": 0,
+					"Running": 3,
+					"Starting": 0
+				}
+			}
+		},
+		"ModifyIndex": 845,
+		"Name": "example2",
+		"ParameterizedJob": false,
+		"ParentID": "",
+		"Periodic": false,
+		"Priority": 50,
+		"Status": "running",
+		"StatusDescription": "",
+		"Stop": false,
+		"SubmitTime": 1591733805353030000,
+		"Type": "service"
+	}
+}]
+```
+<h3>Upsert Job</h3>
+POST the following to `<clouddriver url>/nomad/ops/runJob`
+```
+{
+	"credentials": "account1",
+	"job": {
+		"ID": "example",
+		"Name": "example",
+		"Type": "service",
+		"Priority": 50,
+		"Datacenters": ["dc1"],
+		"TaskGroups": [{
+			"Name": "cache",
+			"Count": 3,
+			"Tasks": [{
+				"Name": "redis",
+				"Driver": "docker",
+				"Config": {
+					"image": "redis:3.2",
+					"port_map": {
+						"db": 6379
+					}
+				},
+				"Services": [{
+					"Name": "redis-cache",
+					"Tags": ["global", "cache"],
+					"PortLabel": "db",
+					"Checks": [{
+						"Name": "alive",
+						"Type": "tcp",
+						"Interval": 10000000000,
+						"Timeout": 2000000000
+					}]
+				}],
+				"Resources": {
+					"CPU": 500,
+					"MemoryMB": 256,
+					"Networks": [{
+						"MBits": 10,
+						"DynamicPorts": [{
+							"Label": "db",
+							"Value": 0
+						}]
+					}]
+				}
+			}],
+			"RestartPolicy": {
+				"Attempts": 2,
+				"Interval": 300000000000,
+				"Delay": 25000000000,
+				"Mode": "fail"
+			},
+			"EphemeralDisk": {
+				"SizeMB": 300
+			}
+		}],
+		"Update": {
+			"MaxParallel": 1,
+			"MinHealthyTime": 10000000000,
+			"HealthyDeadline": 180000000000,
+			"ProgressDeadline": 200000000000,
+			"AutoRevert": false,
+			"Canary": 0
+		}
+	}
+}
+```

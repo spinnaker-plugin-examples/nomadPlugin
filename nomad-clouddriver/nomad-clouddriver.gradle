@@ -46,6 +46,9 @@ dependencies {
   }
   compileOnly (group: 'com.netflix.spectator', name: 'spectator-api', version: "0.103.0")
 
+  // this is only needed because of Groovy classes we are forced to implement like DescriptionValidator
+  compileOnly (group: 'org.codehaus.groovy', name: 'groovy', version: "2.5.11")
+
   implementation group: 'com.hashicorp.nomad', name: 'nomad-sdk', version: '0.11.2.0'
 
 
@@ -54,17 +57,19 @@ dependencies {
     exclude (group: 'com.netflix.spinnaker.kork', module: 'kork-plugins')
     exclude (group: 'com.netflix.spinnaker.kork', module: 'kork-plugins-api')
   }
-  compileOnly (group: 'com.netflix.spinnaker.clouddriver', name: 'clouddriver-security', version: "${clouddriverVersion}")
+  testImplementation (group: 'com.netflix.spinnaker.clouddriver', name: 'clouddriver-security', version: "${clouddriverVersion}")
   testImplementation (group: 'com.netflix.spinnaker.clouddriver', name: 'cats-core', version: "${clouddriverVersion}") {
     exclude (group: 'com.netflix.spinnaker.clouddriver', module: 'clouddriver-core')
   }
 
-  testImplementation "org.junit.jupiter:junit-jupiter-api:5.3.2"
+  testImplementation "org.junit.jupiter:junit-jupiter-api:5.5.2"
   testImplementation group: 'io.strikt', name: 'strikt-core', version: '0.22.1'
   testImplementation group: 'dev.minutest', name: 'minutest', version: '1.10.0'
+  testImplementation group: 'io.mockk', name: 'mockk', version: '1.9.3'
 
-  testRuntime "org.junit.jupiter:junit-jupiter-engine:5.3.2"
-  testRuntime "org.junit.platform:junit-platform-launcher:1.3.2"
+  testRuntime "org.junit.jupiter:junit-jupiter-engine:5.4.0"
+  testRuntime "org.junit.platform:junit-platform-launcher:1.4.0"
+  testRuntime "org.junit.platform:junit-platform-commons:1.5.2"
 }
 
 tasks.withType(Test) {
