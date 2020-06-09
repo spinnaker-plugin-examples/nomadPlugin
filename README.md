@@ -39,7 +39,7 @@ To debug the plugin inside a Spinnaker service (like Orca) using IntelliJ Idea f
 Currently this plugin allows reading Nomad jobs with a Clouddriver caching agent and modifying Nomad jobs with a Clouddriver atomic operation.
 
 <h3>View Jobs</h3>
-GET `<clouddriver url>/cache/nomad/job`
+GET `(clouddriver url)/cache/nomad/job`
 returns something like this:
 
 ```json
@@ -88,7 +88,7 @@ returns something like this:
 }]
 ```
 <h3>Upsert Job</h3>
-POST the following to `<clouddriver url>/nomad/ops/runJob`
+POST the following to `(clouddriver url)/nomad/ops/runJob`
 
 ```json
 {
