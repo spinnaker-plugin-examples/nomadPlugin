@@ -36,7 +36,7 @@ To debug the plugin inside a Spinnaker service (like Orca) using IntelliJ Idea f
 
 <h2>Features</h2>
 
-Currently this plugin allows reading Nomad jobs with a Clouddriver caching agent and modifying Nomad jobs with a Clouddriver atomic operation.
+Currently this plugin allows reading Nomad jobs with a Clouddriver caching agent, modifying Nomad jobs with a Clouddriver atomic operation, and searching Nomad jobs with a Clouddriver searchable provider.
 
 <h3>View Jobs</h3>
 GET `(clouddriver url)/cache/nomad/job`
@@ -154,4 +154,24 @@ POST the following to `(clouddriver url)/nomad/ops/runJob`
 		}
 	}
 }
+```
+
+<h3>Search Jobs</h3>
+GET `(clouddriver url)/search?type=jobs&platform=aws&q=example`
+returns something like this (and yes that is weird that you have to specify `platform=aws` right now):
+
+```json
+[{
+	"pageNumber": 1,
+	"pageSize": 10000,
+	"platform": "aws",
+	"query": "example",
+	"results": [{
+		"account": "account1",
+		"id": "example2",
+		"provider": "nomad",
+		"type": "jobs"
+	}],
+	"totalMatches": 1
+}]
 ```

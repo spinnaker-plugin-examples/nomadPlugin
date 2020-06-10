@@ -6,8 +6,11 @@ import com.netflix.spinnaker.cats.cache.Cache
 import com.netflix.spinnaker.clouddriver.cache.SearchableProvider
 import com.netflix.spinnaker.clouddriver.cache.SearchableProvider.SearchableResource
 import com.netflix.spinnaker.clouddriver.core.CloudProvider
+import org.springframework.core.Ordered
+import org.springframework.core.annotation.Order
 import java.util.*
 
+@Order(Ordered.HIGHEST_PRECEDENCE)
 class NomadCloudProvider(agentProviders: Collection<AgentProvider>) : AgentSchedulerAware(), SearchableProvider, CloudProvider {
 
     companion object Nomad {
