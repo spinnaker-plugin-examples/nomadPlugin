@@ -3,16 +3,16 @@ package io.armory.plugin.nomad.converters
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.netflix.spinnaker.clouddriver.orchestration.AtomicOperation
 import com.netflix.spinnaker.clouddriver.orchestration.AtomicOperationConverter
-import com.netflix.spinnaker.clouddriver.orchestration.AtomicOperations
 import com.netflix.spinnaker.clouddriver.security.AccountCredentialsProvider
 import com.netflix.spinnaker.clouddriver.security.ProviderVersion
 import io.armory.plugin.nomad.NomadCredentials
 import io.armory.plugin.nomad.NomadOperation
+import io.armory.plugin.nomad.NomadOperations
 import io.armory.plugin.nomad.descriptions.UpsertNomadJobDescription
 import io.armory.plugin.nomad.ops.UpsertNomadJobAtomicOperation
 import java.lang.IllegalStateException
 
-@NomadOperation(AtomicOperations.RUN_JOB)
+@NomadOperation(NomadOperations.UpsertJob)
 class UpsertNomadJobAtomicOperationConverter(
         val accountCredentialsProvider: AccountCredentialsProvider) : AtomicOperationConverter {
 
