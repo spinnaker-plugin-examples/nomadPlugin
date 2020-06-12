@@ -41,7 +41,10 @@ class JobCachingAgent(val account: NomadCredentials) : CachingAgent, OnDemandAge
     override fun handles(type: OnDemandAgent.OnDemandType?, cloudProvider: String?) =
             type == OnDemandType.Job && cloudProvider == NomadCloudProvider.ID
 
-
+    /**
+     * The method names of caching agents don't make a lot of sense to me: It's unclear when they're actually invoked
+     * and as part of what lifecycle. I don't have suggestions yet on what to name them.
+     */
     override fun handle(providerCache: ProviderCache?, data: MutableMap<String, *>?): OnDemandAgent.OnDemandResult? {
         return OnDemandResult(agentType,
                 loadData(providerCache),
@@ -62,6 +65,9 @@ class JobCachingAgent(val account: NomadCredentials) : CachingAgent, OnDemandAge
     override fun loadData(providerCache: ProviderCache?): CacheResult {
         val jobs = getJobs()
         val data = jobs.map {
+            // I'm not a fan of this. Spinnaker does far too much value conversions between maps and domain objects.
+            // What would it look like if we had a CacheData implementation that supported actual types, rather than
+            // forcing developers to convert back/forth between maps?
             val attributes = objectMapper.convertValue(it, object: TypeReference<Map<String, Any>>() {})
             DefaultCacheData(
                     Keys.getJobKey(account.name, it.name),
