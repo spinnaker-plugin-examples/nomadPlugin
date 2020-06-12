@@ -31,6 +31,13 @@ class UpsertNomadJobAtomicOperationConverter(
         }
     }
 
+    /**
+     * I've always hated the AtomicOperationConverter because it forces two `convertDescriptions` per request.
+     *
+     * I've changed this interface in my refactor: `convertOperation(description: Any, rawInput: Map<String, Any?>`
+     * for backwards compatibility, but really only `description` would be needed. I'd like to see this change make it
+     * into the initial `clouddriver-api` refactor, deprecating this method.
+     */
     override fun convertOperation(input: Map<Any?, Any?>): AtomicOperation<*> {
         val credentials: NomadCredentials = getCredentialsObject(input.get("credentials").toString())
         return UpsertNomadJobAtomicOperation(convertDescription(input), credentials)
