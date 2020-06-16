@@ -6,6 +6,10 @@ import io.armory.plugin.nomad.descriptions.UpsertNomadJobDescription
 
 class UpsertNomadJobAtomicOperation(val description: UpsertNomadJobDescription, val account: NomadCredentials) : AtomicOperation<Any> {
 
+    /**
+     * I'd like to audit how many AtomicOperations actually use `priorOutputs`. I think only one or two places use it
+     * and I suspect they could be refactored such that this isn't necessary anymore.
+     */
     override fun operate(priorOutputs: MutableList<Any?>?): UpsertNomadJobResponse {
         val r = account.credentials.jobsApi.register(description.job)
         val statusLine = r.httpResponse.statusLine
