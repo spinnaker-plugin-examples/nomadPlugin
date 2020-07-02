@@ -2,7 +2,6 @@ package io.armory.plugin.nomad
 
 import com.netflix.spinnaker.kork.plugins.api.spring.PrivilegedSpringPlugin
 import io.armory.plugin.nomad.converters.UpsertNomadJobAtomicOperationConverter
-import io.armory.plugin.nomad.validators.UpsertNomadJobDescriptionValidator
 import org.slf4j.LoggerFactory
 import org.pf4j.PluginWrapper
 import org.springframework.beans.factory.support.BeanDefinitionRegistry
@@ -16,8 +15,7 @@ class NomadPlugin(wrapper: PluginWrapper) : PrivilegedSpringPlugin(wrapper) {
                 beanDefinitionFor(NomadCloudProvider::class.java),
                 beanDefinitionFor(NomadAgentProvider::class.java),
                 beanDefinitionFor(NomadCredentialsInitializer::class.java),
-                beanDefinitionFor(UpsertNomadJobAtomicOperationConverter::class.java),
-                beanDefinitionFor(UpsertNomadJobDescriptionValidator::class.java)
+                beanDefinitionFor(UpsertNomadJobAtomicOperationConverter::class.java)
         ).forEach {
             registerBean(it, registry)
         }

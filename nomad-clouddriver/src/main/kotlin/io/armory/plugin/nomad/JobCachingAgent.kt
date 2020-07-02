@@ -4,22 +4,26 @@ import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.hashicorp.nomad.apimodel.JobListStub
 import com.netflix.spectator.api.DefaultRegistry
-import com.netflix.spinnaker.cats.agent.*
+import com.netflix.spinnaker.cats.agent.CachingAgent
+import com.netflix.spinnaker.cats.agent.AccountAware
+import com.netflix.spinnaker.cats.agent.AgentDataType
+import com.netflix.spinnaker.cats.agent.CacheResult
+import com.netflix.spinnaker.cats.agent.DefaultCacheResult
 import com.netflix.spinnaker.cats.cache.DefaultCacheData
 import com.netflix.spinnaker.cats.provider.ProviderCache
 import com.netflix.spinnaker.clouddriver.cache.OnDemandAgent
 import com.netflix.spinnaker.clouddriver.cache.OnDemandAgent.OnDemandResult
-import com.netflix.spinnaker.clouddriver.cache.OnDemandAgent.OnDemandType
-import com.netflix.spinnaker.clouddriver.cache.OnDemandMetricsSupport
+import com.netflix.spinnaker.clouddriver.cache.OnDemandType
 
 class JobCachingAgent(val account: NomadCredentials) : CachingAgent, OnDemandAgent, AccountAware {
+    val jobOnDemandType = OnDemandType("Job")
 
     private val objectMapper = ObjectMapper()
     private val registry = DefaultRegistry()
     private val metricsSupport = OnDemandMetricsSupport(
             registry,
             this,
-            "${NomadCloudProvider.ID}:${NomadCloudProvider.ID}:${OnDemandType.Job}"
+            "${NomadCloudProvider.ID}:${NomadCloudProvider.ID}:${jobOnDemandType}"
     )
 
     private val types: Set<AgentDataType> = setOf(
@@ -38,8 +42,8 @@ class JobCachingAgent(val account: NomadCredentials) : CachingAgent, OnDemandAge
 
     override fun getMetricsSupport() = metricsSupport
 
-    override fun handles(type: OnDemandAgent.OnDemandType?, cloudProvider: String?) =
-            type == OnDemandType.Job && cloudProvider == NomadCloudProvider.ID
+    override fun handles(type: OnDemandType?, cloudProvider: String?) =
+            type == jobOnDemandType && cloudProvider == NomadCloudProvider.ID
 
 
     override fun handle(providerCache: ProviderCache?, data: MutableMap<String, *>?): OnDemandAgent.OnDemandResult? {

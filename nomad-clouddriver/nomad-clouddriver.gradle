@@ -29,38 +29,22 @@ spinnakerPlugin {
 
 dependencies {
   compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+
   compileOnly (group: 'org.springframework', name: 'spring-context', version: '5.2.1.RELEASE')
   compileOnly (group: 'org.springframework', name: 'spring-web', version: '5.2.2.RELEASE')
   compileOnly (group: 'org.springframework.boot', name: 'spring-boot', version: '2.2.4.RELEASE')
+
   compileOnly (group: 'com.netflix.spinnaker.kork', name: 'kork-plugins-spring-api', version: "${korkVersion}")  {
     exclude (group: 'org.springframework.boot')
   }
-  compileOnly (group: 'com.netflix.spinnaker.clouddriver', name: 'clouddriver-core', version: "${clouddriverVersion}") {
-    exclude (group: 'org.codehaus.groovy')
-    exclude (group: 'com.netflix.spinnaker.kork', module: 'kork-plugins')
-    exclude (group: 'com.netflix.spinnaker.kork', module: 'kork-plugins-api')
-  }
-  compileOnly (group: 'com.netflix.spinnaker.clouddriver', name: 'clouddriver-security', version: "${clouddriverVersion}")
-  compileOnly (group: 'com.netflix.spinnaker.clouddriver', name: 'cats-core', version: "${clouddriverVersion}") {
-    exclude (group: 'com.netflix.spinnaker.clouddriver', module: 'clouddriver-core')
-  }
-  compileOnly (group: 'com.netflix.spectator', name: 'spectator-api', version: "0.103.0")
+  compileOnly (group: 'com.netflix.spinnaker.clouddriver', name: 'clouddriver-api', version: "${clouddriverVersion}")
 
-  // this is only needed because of Groovy classes we are forced to implement like DescriptionValidator
-  compileOnly (group: 'org.codehaus.groovy', name: 'groovy', version: "2.5.11")
+  compileOnly (group: 'com.netflix.spectator', name: 'spectator-api', version: "0.103.0")
 
   implementation group: 'com.hashicorp.nomad', name: 'nomad-sdk', version: '0.11.2.0'
 
 
-  testImplementation (group: 'com.netflix.spinnaker.clouddriver', name: 'clouddriver-core', version: "${clouddriverVersion}") {
-    exclude (group: 'org.codehaus.groovy')
-    exclude (group: 'com.netflix.spinnaker.kork', module: 'kork-plugins')
-    exclude (group: 'com.netflix.spinnaker.kork', module: 'kork-plugins-api')
-  }
-  testImplementation (group: 'com.netflix.spinnaker.clouddriver', name: 'clouddriver-security', version: "${clouddriverVersion}")
-  testImplementation (group: 'com.netflix.spinnaker.clouddriver', name: 'cats-core', version: "${clouddriverVersion}") {
-    exclude (group: 'com.netflix.spinnaker.clouddriver', module: 'clouddriver-core')
-  }
+  testImplementation (group: 'com.netflix.spinnaker.clouddriver', name: 'clouddriver-api', version: "${clouddriverVersion}")
 
   testImplementation "org.junit.jupiter:junit-jupiter-api:5.5.2"
   testImplementation group: 'io.strikt', name: 'strikt-core', version: '0.22.1'

@@ -18,8 +18,6 @@ data class NomadCredentials(
 
     override fun getAccountType() = cloudProvider
 
-    override fun getRequiredGroupMembership(): List<String> = emptyList()
-
     override fun getCredentials(): NomadApiClient {
         return NomadApiClient(config)
     }
