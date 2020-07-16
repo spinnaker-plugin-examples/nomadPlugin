@@ -88,7 +88,7 @@ returns something like this:
 }]
 ```
 <h3>Upsert Job</h3>
-POST the following to `(clouddriver url)/nomad/ops/runJob`
+POST the following to `(clouddriver url)/nomad/ops/upsertJob`
 
 ```json
 {
