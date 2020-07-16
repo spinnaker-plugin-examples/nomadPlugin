@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.netflix.spinnaker.clouddriver.orchestration.AtomicOperation
 import com.netflix.spinnaker.clouddriver.orchestration.AtomicOperationConverter
 import com.netflix.spinnaker.clouddriver.security.AccountCredentialsProvider
-import com.netflix.spinnaker.clouddriver.security.ProviderVersion
 import io.armory.plugin.nomad.NomadCredentials
 import io.armory.plugin.nomad.NomadOperation
 import io.armory.plugin.nomad.NomadOperations
@@ -17,10 +16,6 @@ class UpsertNomadJobAtomicOperationConverter(
         val accountCredentialsProvider: AccountCredentialsProvider) : AtomicOperationConverter {
 
     val objectMapper = ObjectMapper()
-
-    override fun acceptsVersion(version: ProviderVersion?): Boolean {
-        return version == ProviderVersion.v1
-    }
 
     fun getCredentialsObject(name: String): NomadCredentials {
         try {
