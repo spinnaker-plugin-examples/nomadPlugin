@@ -3,6 +3,7 @@ package io.armory.plugin.nomad
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.hashicorp.nomad.apimodel.JobListStub
+import com.hashicorp.nomad.javasdk.NomadApiClient
 import com.netflix.spectator.api.DefaultRegistry
 import com.netflix.spinnaker.cats.agent.CachingAgent
 import com.netflix.spinnaker.cats.agent.AccountAware
@@ -78,7 +79,7 @@ class JobCachingAgent(val account: NomadCredentials) : CachingAgent, OnDemandAge
     }
 
     private fun getJobs(): List<JobListStub> {
-        val response = account.credentials.jobsApi.list()
+        val response = NomadApiClient(account.credentials).jobsApi.list()
         return response.value
     }
 
