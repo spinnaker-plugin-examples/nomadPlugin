@@ -1,27 +1,18 @@
 package io.armory.plugin.nomad
 
-import com.netflix.spinnaker.kork.plugins.api.spring.PrivilegedSpringPlugin
-import io.armory.plugin.nomad.converters.UpsertNomadJobAtomicOperationConverter
+import com.netflix.spinnaker.kork.plugins.api.spring.SpringLoaderPlugin
 import org.slf4j.LoggerFactory
 import org.pf4j.PluginWrapper
-import org.springframework.beans.factory.support.BeanDefinitionRegistry
 
-class NomadPlugin(wrapper: PluginWrapper) : PrivilegedSpringPlugin(wrapper) {
-
-    override fun registerBeanDefinitions(registry: BeanDefinitionRegistry) {
-        listOf(
-                beanDefinitionFor(NomadProperties::class.java),
-                beanDefinitionFor(Keys::class.java),
-                beanDefinitionFor(NomadCloudProvider::class.java),
-                beanDefinitionFor(NomadAgentProvider::class.java),
-                beanDefinitionFor(NomadCredentialsInitializer::class.java),
-                beanDefinitionFor(UpsertNomadJobAtomicOperationConverter::class.java)
-        ).forEach {
-            registerBean(it, registry)
-        }
-    }
+class NomadPlugin(wrapper: PluginWrapper) : SpringLoaderPlugin(wrapper) {
 
     private val logger = LoggerFactory.getLogger(NomadPlugin::class.java)
+
+    override fun getPackagesToScan(): List<String> {
+        return listOf(
+                "io.armory.plugin.nomad"
+        )
+    }
 
     override fun start() {
         logger.info("NomadPlugin.start()")

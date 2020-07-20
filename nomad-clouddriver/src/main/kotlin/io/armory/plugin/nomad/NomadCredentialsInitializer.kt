@@ -2,7 +2,9 @@ package io.armory.plugin.nomad
 
 import com.hashicorp.nomad.javasdk.NomadApiConfiguration
 import com.netflix.spinnaker.clouddriver.security.AccountCredentialsRepository
+import org.springframework.stereotype.Component
 
+@Component
 class NomadCredentialsInitializer(
         val accountCredentialsRepository: AccountCredentialsRepository,
         val properties: NomadProperties) {

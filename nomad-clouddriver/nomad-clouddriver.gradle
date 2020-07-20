@@ -6,12 +6,14 @@ buildscript {
   }
   dependencies {
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    classpath "org.jetbrains.kotlin:kotlin-allopen:$kotlin_version"
   }
 }
 apply plugin: "io.spinnaker.plugin.service-extension"
 apply plugin: "maven-publish"
 apply plugin: 'kotlin'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-spring'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -34,9 +36,7 @@ dependencies {
   compileOnly (group: 'org.springframework', name: 'spring-web', version: '5.2.2.RELEASE')
   compileOnly (group: 'org.springframework.boot', name: 'spring-boot', version: '2.2.4.RELEASE')
 
-  compileOnly (group: 'com.netflix.spinnaker.kork', name: 'kork-plugins-spring-api', version: "${korkVersion}")  {
-    exclude (group: 'org.springframework.boot')
-  }
+  compileOnly (group: 'com.netflix.spinnaker.kork', name: 'kork-plugins-spring-api', version: "${korkVersion}")
   compileOnly (group: 'com.netflix.spinnaker.clouddriver', name: 'clouddriver-api', version: "${clouddriverVersion}")
 
   compileOnly (group: 'com.netflix.spectator', name: 'spectator-api', version: "0.103.0")

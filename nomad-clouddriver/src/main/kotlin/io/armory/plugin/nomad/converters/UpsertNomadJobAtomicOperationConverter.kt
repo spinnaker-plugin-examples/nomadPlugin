@@ -4,14 +4,18 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.netflix.spinnaker.clouddriver.orchestration.AtomicOperation
 import com.netflix.spinnaker.clouddriver.orchestration.AtomicOperationConverter
 import com.netflix.spinnaker.clouddriver.security.AccountCredentialsProvider
+import com.netflix.spinnaker.kork.plugins.api.spring.ExposeToApp
 import io.armory.plugin.nomad.NomadCredentials
 import io.armory.plugin.nomad.NomadOperation
 import io.armory.plugin.nomad.NomadOperations
 import io.armory.plugin.nomad.descriptions.UpsertNomadJobDescription
 import io.armory.plugin.nomad.ops.UpsertNomadJobAtomicOperation
+import org.springframework.stereotype.Component
 import java.lang.IllegalStateException
 
+@Component
 @NomadOperation(NomadOperations.UpsertJob)
+@ExposeToApp
 class UpsertNomadJobAtomicOperationConverter(
         val accountCredentialsProvider: AccountCredentialsProvider) : AtomicOperationConverter {
 

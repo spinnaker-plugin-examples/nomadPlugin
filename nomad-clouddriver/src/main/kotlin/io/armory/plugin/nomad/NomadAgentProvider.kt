@@ -3,7 +3,9 @@ package io.armory.plugin.nomad
 import com.netflix.spinnaker.cats.agent.Agent
 import com.netflix.spinnaker.cats.agent.AgentProvider
 import com.netflix.spinnaker.clouddriver.security.AccountCredentialsProvider
+import org.springframework.stereotype.Component
 
+@Component
 class NomadAgentProvider(
         nomadCredentialsInitializer: NomadCredentialsInitializer,
         val accountCredentialsProvider: AccountCredentialsProvider
