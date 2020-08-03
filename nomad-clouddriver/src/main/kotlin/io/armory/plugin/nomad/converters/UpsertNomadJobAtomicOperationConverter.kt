@@ -17,9 +17,8 @@ import java.lang.IllegalStateException
 @NomadOperation(NomadOperations.UpsertJob)
 @ExposeToApp
 class UpsertNomadJobAtomicOperationConverter(
+        private val objectMapper: ObjectMapper,
         val accountCredentialsProvider: AccountCredentialsProvider) : AtomicOperationConverter {
-
-    val objectMapper = ObjectMapper()
 
     fun getCredentialsObject(name: String): NomadCredentials {
         try {

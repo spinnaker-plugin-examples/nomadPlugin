@@ -7,6 +7,8 @@ import com.netflix.spinnaker.clouddriver.cache.SearchableProvider
 import com.netflix.spinnaker.clouddriver.cache.SearchableProvider.SearchableResource
 import com.netflix.spinnaker.clouddriver.core.CloudProvider
 import com.netflix.spinnaker.kork.plugins.api.spring.ExposeToApp
+import io.armory.plugin.nomad.cache.Keys
+import io.armory.plugin.nomad.cache.Namespace
 import org.springframework.core.Ordered
 import org.springframework.core.annotation.Order
 import org.springframework.stereotype.Component

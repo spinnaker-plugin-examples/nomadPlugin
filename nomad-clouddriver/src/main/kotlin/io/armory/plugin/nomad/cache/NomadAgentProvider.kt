@@ -1,12 +1,17 @@
-package io.armory.plugin.nomad
+package io.armory.plugin.nomad.cache
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.netflix.spinnaker.cats.agent.Agent
 import com.netflix.spinnaker.cats.agent.AgentProvider
 import com.netflix.spinnaker.clouddriver.security.AccountCredentialsProvider
+import io.armory.plugin.nomad.NomadCloudProvider
+import io.armory.plugin.nomad.NomadCredentials
+import io.armory.plugin.nomad.NomadCredentialsInitializer
 import org.springframework.stereotype.Component
 
 @Component
 class NomadAgentProvider(
+        private val objectMapper: ObjectMapper,
         nomadCredentialsInitializer: NomadCredentialsInitializer,
         val accountCredentialsProvider: AccountCredentialsProvider
 ) : AgentProvider {
@@ -23,8 +28,12 @@ class NomadAgentProvider(
         return accountCredentialsProvider.all
                 .filter { it is NomadCredentials }
                 .map {
-                    JobCachingAgent(it as NomadCredentials)
-                }
+                    val credentials = it as NomadCredentials
+                    listOf(
+                            AllocationCachingAgent(objectMapper, credentials),
+                            DeploymentCachingAgent(objectMapper, credentials),
+                            JobCachingAgent(objectMapper, credentials))
+                }.flatten()
     }
 
 }

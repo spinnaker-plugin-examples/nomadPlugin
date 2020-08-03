@@ -38,13 +38,19 @@ dependencies {
 
   compileOnly (group: 'com.netflix.spinnaker.kork', name: 'kork-plugins-spring-api', version: "${korkVersion}")
   compileOnly (group: 'com.netflix.spinnaker.clouddriver', name: 'clouddriver-api', version: "${clouddriverVersion}")
+  compileOnly (group: 'com.netflix.spinnaker.clouddriver', name: 'clouddriver-core', version: "${clouddriverVersion}")
 
   compileOnly (group: 'com.netflix.spectator', name: 'spectator-api', version: "0.103.0")
 
-  implementation group: 'com.hashicorp.nomad', name: 'nomad-sdk', version: '0.11.2.0'
+  compileOnly (group: 'com.fasterxml.jackson.module', name: 'jackson-module-kotlin', version: "2.11.1")
+
+  implementation (group: 'com.hashicorp.nomad', name: 'nomad-sdk', version: '0.11.2.0') {
+    exclude (group: 'com.fasterxml.jackson.core')
+  }
 
 
   testImplementation (group: 'com.netflix.spinnaker.clouddriver', name: 'clouddriver-api', version: "${clouddriverVersion}")
+  testImplementation (group: 'com.fasterxml.jackson.module', name: 'jackson-module-kotlin', version: "2.11.1")
 
   testImplementation "org.junit.jupiter:junit-jupiter-api:5.5.2"
   testImplementation group: 'io.strikt', name: 'strikt-core', version: '0.22.1'

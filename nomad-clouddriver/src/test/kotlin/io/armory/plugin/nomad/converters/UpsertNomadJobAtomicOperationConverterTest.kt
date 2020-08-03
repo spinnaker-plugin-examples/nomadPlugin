@@ -1,5 +1,6 @@
 package io.armory.plugin.nomad.converters
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.netflix.spinnaker.clouddriver.security.AccountCredentialsProvider
 import dev.minutest.junit.JUnit5Minutests
 import dev.minutest.rootContext
@@ -11,7 +12,7 @@ class UpsertNomadJobAtomicOperationConverterTest : JUnit5Minutests {
 
     val credentialsProvider =  mockk<AccountCredentialsProvider>()
 
-    val op = UpsertNomadJobAtomicOperationConverter(credentialsProvider)
+    val op = UpsertNomadJobAtomicOperationConverter(ObjectMapper(), credentialsProvider)
 
     val input: Map<Any?, Any?> = mapOf("job" to mapOf(
             "ID" to "example",
