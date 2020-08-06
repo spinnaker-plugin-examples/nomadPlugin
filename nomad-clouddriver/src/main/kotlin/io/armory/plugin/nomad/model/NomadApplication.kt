@@ -15,7 +15,7 @@ class NomadApplication(
 
     companion object NomadApplicationCompanion {
         fun parseName(name: String): Name {
-            val parts = name.split("-")
+            val parts = name.split(".")
             return Name(parts[0], parts[1])
         }
     }
@@ -29,7 +29,7 @@ class NomadApplication(
     }
 
     override fun getName(): String {
-        return "$namespace-$jobId"
+        return "$namespace.$jobId"
     }
 
 }

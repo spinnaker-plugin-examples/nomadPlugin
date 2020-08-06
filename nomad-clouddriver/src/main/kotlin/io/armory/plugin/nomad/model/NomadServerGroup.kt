@@ -4,6 +4,7 @@ import com.hashicorp.nomad.apimodel.*
 import com.netflix.spinnaker.clouddriver.model.HealthState
 import com.netflix.spinnaker.clouddriver.model.Instance
 import com.netflix.spinnaker.clouddriver.model.ServerGroup
+import com.netflix.spinnaker.moniker.Moniker
 import io.armory.plugin.nomad.NomadCloudProvider
 
 class NomadServerGroup(
@@ -20,15 +21,29 @@ class NomadServerGroup(
 
     companion object NomadClusterCompanion {
         fun parseName(name: String): Name {
-            val parts = name.split("-")
-            return Name(parts[0], parts[1], parts[2], parts[3])
+            val appParts = NomadApplication.parseName(name)
+            val parts = appParts.jobId.split("-")
+            return Name(appParts.namespace, parts[0], parts[1], parts[2])
         }
     }
 
     val taskGroup = job.taskGroups.find { it.name == taskGroupName }!!
 
+    val application = "${job.namespace}.${job.id}"
+
+    val cluster = "$application-${taskGroup.name}"
+
+    override fun getMoniker(): Moniker {
+        return Moniker.builder()
+                .app(application)
+                .cluster(cluster)
+                .detail(taskGroupName)
+                .sequence(job.version.toInt())
+                .build()
+    }
+
     override fun getName(): String {
-        return "${job.namespace}-${job.id}-${taskGroup.name}-${job.version}"
+        return "$cluster-${job.version}"
     }
 
     override fun getCapacity(): ServerGroup.Capacity {
@@ -67,7 +82,7 @@ class NomadServerGroup(
     }
 
     override fun getType(): String {
-        return job.type
+        return NomadCloudProvider.ID
     }
 
     override fun getInstanceCounts(): ServerGroup.InstanceCounts {

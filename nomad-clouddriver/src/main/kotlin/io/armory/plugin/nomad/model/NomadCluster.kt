@@ -3,6 +3,8 @@ package io.armory.plugin.nomad.model
 import com.hashicorp.nomad.apimodel.Job
 import com.netflix.spinnaker.clouddriver.model.Cluster
 import com.netflix.spinnaker.clouddriver.model.LoadBalancer
+import com.netflix.spinnaker.clouddriver.names.NamerRegistry
+import com.netflix.spinnaker.moniker.Moniker
 import io.armory.plugin.nomad.NomadCloudProvider
 
 class NomadCluster(val account: String,
@@ -18,17 +20,30 @@ class NomadCluster(val account: String,
 
     companion object NomadClusterCompanion {
         fun parseName(name: String): Name {
-            val parts = name.split("-")
-            return Name(parts[0], parts[1], parts[2])
+            val appParts = NomadApplication.parseName(name)
+            val parts = appParts.jobId.split("-")
+            return Name(appParts.namespace, parts[0], parts[1])
         }
     }
 
-    override fun getLoadBalancers(): Set<out LoadBalancer> {
+    val namespace = job.namespace
+
+    val application = "$namespace.${job.id}"
+
+    override fun getMoniker(): Moniker {
+        return Moniker.builder()
+                .app(application)
+                .cluster(name)
+                .detail(taskGroupName)
+                .build()
+    }
+
+    override fun getLoadBalancers(): Set<LoadBalancer> {
         return emptySet()
     }
 
     override fun getName(): String {
-        return "${job.namespace}-${job.id}-$taskGroupName"
+        return "$application-$taskGroupName"
     }
 
     override fun getAccountName(): String {

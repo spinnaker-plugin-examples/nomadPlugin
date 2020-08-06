@@ -41,6 +41,7 @@ dependencies {
   compileOnly (group: 'com.netflix.spinnaker.clouddriver', name: 'clouddriver-core', version: "${clouddriverVersion}")
 
   compileOnly (group: 'com.netflix.spectator', name: 'spectator-api', version: "0.103.0")
+  compileOnly (group: 'com.netflix.spinnaker.moniker', name: 'moniker', version: "0.3.3")
 
   compileOnly (group: 'com.fasterxml.jackson.module', name: 'jackson-module-kotlin', version: "2.11.1")
 
