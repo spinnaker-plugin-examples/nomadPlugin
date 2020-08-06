@@ -10,7 +10,7 @@
     "postinstall": "check-plugin && check-peer-dependencies || true"
   },
   "dependencies": {
-    "angular": "1.6.10",
+    "angular": "1.8.0",
     "@spinnaker/core": "0.0.471",
     "@spinnaker/pluginsdk": "0.0.10",
     "@uirouter/core": "6.0.4",
