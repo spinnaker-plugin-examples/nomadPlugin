@@ -8,7 +8,7 @@ pluginManagement {
 
 rootProject.name="nomadPlugin"
 
-include "nomad-clouddriver"
+include "nomad-clouddriver", "nomad-deck"
 
 def setBuildFile(project) {
   project.buildFileName = "${project.name}.gradle"
