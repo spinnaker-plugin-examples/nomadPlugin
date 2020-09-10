@@ -14,7 +14,7 @@ class UpsertNomadJobAtomicOperationConverterTest : JUnit5Minutests {
 
     val op = UpsertNomadJobAtomicOperationConverter(ObjectMapper(), credentialsProvider)
 
-    val input: Map<Any?, Any?> = mapOf("job" to mapOf(
+    val input: Map<String?, Any?> = mapOf("job" to mapOf(
             "ID" to "example",
             "Name" to "example",
             "Type" to "service",

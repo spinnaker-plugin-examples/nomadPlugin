@@ -12,9 +12,11 @@ import org.springframework.stereotype.Component
 @NomadOperation(NomadOperations.UpsertJob)
 @ExposeToApp
 class UpsertNomadJobDescriptionValidator : DescriptionValidator<UpsertNomadJobDescription>(){
-    override fun validate(priorDescriptions: MutableList<Any?>?, description: UpsertNomadJobDescription, errors: ValidationErrors?) {
+
+    override fun validate(priorDescriptions: List<UpsertNomadJobDescription>?, description: UpsertNomadJobDescription, errors: ValidationErrors) {
         if (description.job?.id == null) {
-            errors!!.rejectValue("job.id", "not.nullable")
+            errors.rejectValue("job.id", "not.nullable")
         }
     }
+
 }

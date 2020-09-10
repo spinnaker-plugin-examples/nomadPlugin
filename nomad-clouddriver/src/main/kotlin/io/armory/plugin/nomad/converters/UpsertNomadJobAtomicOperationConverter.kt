@@ -29,12 +29,12 @@ class UpsertNomadJobAtomicOperationConverter(
         }
     }
 
-    override fun convertOperation(input: Map<Any?, Any?>): AtomicOperation<*> {
+    override fun convertOperation(input: Map<String?, Any?>): AtomicOperation<*> {
         val credentials: NomadCredentials = getCredentialsObject(input.get("credentials").toString())
         return UpsertNomadJobAtomicOperation(convertDescription(input), credentials)
     }
 
-    override fun convertDescription(input: Map<Any?, Any?>): UpsertNomadJobDescription {
+    override fun convertDescription(input: Map<String?, Any?>): UpsertNomadJobDescription {
         return objectMapper.convertValue(input, UpsertNomadJobDescription::class.java)
     }
 
