@@ -33,7 +33,7 @@ spinnakerPlugin {
 }
 
 dependencies {
-  compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+  compileOnly "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
   compileOnly (group: 'org.springframework', name: 'spring-context', version: '5.2.1.RELEASE')
   compileOnly (group: 'org.springframework', name: 'spring-web', version: '5.2.2.RELEASE')
