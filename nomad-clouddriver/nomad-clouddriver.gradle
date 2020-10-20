@@ -1,12 +1,10 @@
 buildscript {
-  ext.kotlin_version = '1.3.50'
-
   repositories {
     mavenCentral()
   }
   dependencies {
-    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    classpath "org.jetbrains.kotlin:kotlin-allopen:$kotlin_version"
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+    classpath "org.jetbrains.kotlin:kotlin-allopen:$kotlinVersion"
   }
 }
 apply plugin: "io.spinnaker.plugin.service-extension"
@@ -15,8 +13,8 @@ apply plugin: 'kotlin'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-spring'
 
-sourceCompatibility = 11
-targetCompatibility = 11
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 repositories {
   mavenCentral()
@@ -33,7 +31,7 @@ spinnakerPlugin {
 }
 
 dependencies {
-  compileOnly "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+  compileOnly "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
 
   compileOnly (group: 'org.springframework', name: 'spring-context', version: '5.2.1.RELEASE')
   compileOnly (group: 'org.springframework', name: 'spring-web', version: '5.2.2.RELEASE')
