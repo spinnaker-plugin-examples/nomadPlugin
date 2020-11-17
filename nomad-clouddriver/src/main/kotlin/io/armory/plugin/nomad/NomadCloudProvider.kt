@@ -26,7 +26,7 @@ class NomadCloudProvider(agentProviders: Collection<AgentProvider>) : AgentSched
 
     val nomadAgents = agentProviders
             .filter { it.supports(PROVIDER_NAME) }
-            .map { it.agents() }
+            .map { it.agents(null) }
             .flatten()
 
     override fun getId() = ID
