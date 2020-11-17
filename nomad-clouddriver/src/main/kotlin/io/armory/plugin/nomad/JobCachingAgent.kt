@@ -9,8 +9,8 @@ import com.netflix.spinnaker.cats.cache.DefaultCacheData
 import com.netflix.spinnaker.cats.provider.ProviderCache
 import com.netflix.spinnaker.clouddriver.cache.OnDemandAgent
 import com.netflix.spinnaker.clouddriver.cache.OnDemandAgent.OnDemandResult
-import com.netflix.spinnaker.clouddriver.cache.OnDemandAgent.OnDemandType
 import com.netflix.spinnaker.clouddriver.cache.OnDemandMetricsSupport
+import com.netflix.spinnaker.clouddriver.cache.OnDemandType
 
 class JobCachingAgent(val account: NomadCredentials) : CachingAgent, OnDemandAgent, AccountAware {
 
@@ -38,7 +38,7 @@ class JobCachingAgent(val account: NomadCredentials) : CachingAgent, OnDemandAge
 
     override fun getMetricsSupport() = metricsSupport
 
-    override fun handles(type: OnDemandAgent.OnDemandType?, cloudProvider: String?) =
+    override fun handles(type: OnDemandType?, cloudProvider: String?) =
             type == OnDemandType.Job && cloudProvider == NomadCloudProvider.ID
 
 
