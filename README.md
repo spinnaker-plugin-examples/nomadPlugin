@@ -1,6 +1,4 @@
 ![CI](https://github.com/spinnaker-plugin-examples/nomadPlugin/workflows/CI/badge.svg)
-![Latest Kork](https://github.com/spinnaker-plugin-examples/nomadPlugin/workflows/Latest%20Kork/badge.svg?branch=master)
-![Latest Clouddriver](https://github.com/spinnaker-plugin-examples/nomadPlugin/workflows/Latest%20Clouddriver/badge.svg?branch=master)
 
 This plugin adds a Nomad cloud provider.
 
