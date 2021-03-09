@@ -76,19 +76,8 @@ jobs:
         uses: armory-io/plugin-metadata-updater@master
         env:
           GITHUB_OAUTH: ${{ secrets.TOKEN }}
+          JAVA_HOME: ''
         with:
           metadata: build/distributions/plugin-info.json
           binary_url: https://github.com/${{ steps.get_project_info.outputs.REPO }}/releases/download/${{ steps.get_project_info.outputs.VERSION }}/${{ steps.get_project_info.outputs.PROJECT }}-${{ steps.get_project_info.outputs.VERSION }}.zip
           metadata_repo_url: https://github.com/spinnaker-plugin-examples/examplePluginRepository
-
-      - name: setup gcloud
-        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
-        with:
-          project_id: cloud-armory
-          service_account_key: ${{ secrets.GCP_KEY }}
-          export_default_credentials: true
-
-      - name: push image to registry
-        run: |
-          gcloud auth configure-docker -q
-          docker push gcr.io/cloud-armory/${{ steps.get_project_info.outputs.PROJECT_KEBAB }}:${{ steps.get_project_info.outputs.VERSION }}
