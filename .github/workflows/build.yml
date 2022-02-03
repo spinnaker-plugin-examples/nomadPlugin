@@ -6,6 +6,8 @@ jobs:
   build:
     name: Build Plugin
     runs-on: ubuntu-latest
+    env:
+      GRADLE_ARGS: -Partifactory_user=${{secrets.ARTIFACTORY_USER}} -Partifactory_password=${{secrets.ARTIFACTORY_TOKEN}}
     steps:
       - name: checkout code
         uses: actions/checkout@v2
@@ -14,9 +16,9 @@ jobs:
         with:
           java-version: 11
       - name: run tests
-        run: ./gradlew test
+        run: ./gradlew test $GRADLE_ARGS
       - name: build
-        run: ./gradlew releaseBundle
+        run: ./gradlew releaseBundle $GRADLE_ARGS
       - name: archive build artifacts
         uses: actions/upload-artifact@v1
         with:
