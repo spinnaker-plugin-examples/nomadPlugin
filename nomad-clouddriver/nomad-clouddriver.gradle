@@ -13,16 +13,25 @@ apply plugin: 'kotlin'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-spring'
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = 11
+targetCompatibility = 11
 
 repositories {
   mavenCentral()
-  jcenter()
-  maven { url "https://spinnaker-releases.bintray.com/jars" }
-
-  // Used for testing against the Google product releases.
-  maven { url "https://spinnaker-releases.bintray.com/jars" }
+  maven {
+    url 'https://armory.jfrog.io/armory/gradle-dev-local/'
+    credentials {
+      username = "${artifactory_user}"
+      password = "${artifactory_password}"
+    }
+  }
+  maven {
+    url 'https://armory.jfrog.io/armory/jcenter-cache/'
+    credentials {
+      username = "${artifactory_user}"
+      password = "${artifactory_password}"
+    }
+  }
 }
 
 spinnakerPlugin {
@@ -33,30 +42,37 @@ spinnakerPlugin {
 dependencies {
   compileOnly "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
 
+  implementation (group: 'com.hashicorp.nomad', name: 'nomad-sdk', version: '0.11.3.0') {
+    exclude (group: 'com.fasterxml.jackson.core')
+  }
+  compileOnly (group: 'com.fasterxml.jackson.module', name: 'jackson-module-kotlin', version: "2.11.1")
+
   compileOnly (group: 'org.springframework', name: 'spring-context', version: '5.2.1.RELEASE')
   compileOnly (group: 'org.springframework', name: 'spring-web', version: '5.2.2.RELEASE')
   compileOnly (group: 'org.springframework.boot', name: 'spring-boot', version: '2.2.4.RELEASE')
 
-  compileOnly (group: 'com.netflix.spinnaker.kork', name: 'kork-plugins-spring-api', version: "${korkVersion}")
-  compileOnly (group: 'com.netflix.spinnaker.clouddriver', name: 'clouddriver-api', version: "${clouddriverVersion}")
-  compileOnly (group: 'com.netflix.spinnaker.clouddriver', name: 'clouddriver-core', version: "${clouddriverVersion}")
+  compileOnly (group: 'io.spinnaker.kork', name: 'kork-api', version: "${korkVersion}")
+  compileOnly (group: 'io.spinnaker.kork', name: 'kork-plugins', version: "${korkVersion}")
+  compileOnly (group: 'io.spinnaker.kork', name: 'kork-plugins-spring-api', version: "${korkVersion}")
+  compileOnly (group: 'io.spinnaker.kork', name: 'kork-credentials-api', version: "${korkVersion}")
+  compileOnly (group: 'io.spinnaker.clouddriver', name: 'clouddriver-api', version: "${clouddriverVersion}")
+  compileOnly (group: 'io.spinnaker.clouddriver', name: 'clouddriver-core', version: "${clouddriverVersion}") {
+    exclude (group: 'org.codehaus.groovy')
+  }
 
   compileOnly (group: 'com.netflix.spectator', name: 'spectator-api', version: "0.103.0")
-  compileOnly (group: 'com.netflix.spinnaker.moniker', name: 'moniker', version: "0.3.3")
+  compileOnly (group: 'com.netflix.spinnaker.moniker', name: 'moniker', version: "0.2.0")
 
   compileOnly (group: 'com.fasterxml.jackson.module', name: 'jackson-module-kotlin', version: "2.11.1")
 
-  implementation (group: 'com.hashicorp.nomad', name: 'nomad-sdk', version: '0.11.2.0') {
-    exclude (group: 'com.fasterxml.jackson.core')
-  }
-
-
-  testImplementation (group: 'com.netflix.spinnaker.clouddriver', name: 'clouddriver-api', version: "${clouddriverVersion}")
+  testImplementation (group: 'io.spinnaker.kork', name: 'kork-plugins-api', version: "${korkVersion}")
+  testImplementation (group: 'io.spinnaker.kork', name: 'kork-credentials-api', version: "${korkVersion}")
+  testImplementation (group: 'io.spinnaker.clouddriver', name: 'clouddriver-api', version: "${clouddriverVersion}")
   testImplementation (group: 'com.fasterxml.jackson.module', name: 'jackson-module-kotlin', version: "2.11.1")
 
   testImplementation "org.junit.jupiter:junit-jupiter-api:5.5.2"
-  testImplementation group: 'io.strikt', name: 'strikt-core', version: '0.22.1'
-  testImplementation group: 'dev.minutest', name: 'minutest', version: '1.10.0'
+  testImplementation group: 'io.strikt', name: 'strikt-core', version: '0.31.0'
+  testImplementation group: 'dev.minutest', name: 'minutest', version: '1.13.0'
   testImplementation group: 'io.mockk', name: 'mockk', version: '1.9.3'
 
   testRuntime "org.junit.jupiter:junit-jupiter-engine:5.4.0"

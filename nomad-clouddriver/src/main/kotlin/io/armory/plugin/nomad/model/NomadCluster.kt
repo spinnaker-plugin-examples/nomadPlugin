@@ -3,7 +3,6 @@ package io.armory.plugin.nomad.model
 import com.hashicorp.nomad.apimodel.Job
 import com.netflix.spinnaker.clouddriver.model.Cluster
 import com.netflix.spinnaker.clouddriver.model.LoadBalancer
-import com.netflix.spinnaker.clouddriver.names.NamerRegistry
 import com.netflix.spinnaker.moniker.Moniker
 import io.armory.plugin.nomad.NomadCloudProvider
 

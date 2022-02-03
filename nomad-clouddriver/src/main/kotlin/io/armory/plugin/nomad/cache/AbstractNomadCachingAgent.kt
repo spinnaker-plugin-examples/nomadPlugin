@@ -9,7 +9,7 @@ import com.netflix.spinnaker.cats.cache.DefaultCacheData
 import com.netflix.spinnaker.cats.provider.ProviderCache
 import com.netflix.spinnaker.clouddriver.cache.OnDemandAgent
 import com.netflix.spinnaker.clouddriver.cache.OnDemandAgent.OnDemandResult
-import com.netflix.spinnaker.clouddriver.cache.OnDemandMetricsSupport
+import com.netflix.spinnaker.clouddriver.cache.OnDemandMetricsSupportable
 import com.netflix.spinnaker.clouddriver.cache.OnDemandType
 import io.armory.plugin.nomad.NomadCloudProvider
 import io.armory.plugin.nomad.NomadCredentials
@@ -31,12 +31,6 @@ abstract class AbstractNomadCachingAgent<T>(private val objectMapper: ObjectMapp
     override fun getProvidedDataTypes() = setOf(AgentDataType.Authority.AUTHORITATIVE.forType(namespace.ns))
 
     override fun getOnDemandAgentType() = "$agentType-OnDemand"
-
-    override fun getMetricsSupport() = OnDemandMetricsSupport(
-            registry,
-            this,
-            "${NomadCloudProvider.ID}:${onDemandType}"
-    )
 
     override fun handles(type: OnDemandType?, cloudProvider: String?) =
             type == onDemandType && cloudProvider == NomadCloudProvider.ID
@@ -71,6 +65,10 @@ abstract class AbstractNomadCachingAgent<T>(private val objectMapper: ObjectMapp
         }
         val cacheResults = mapOf(namespace.ns to data)
         return DefaultCacheResult(cacheResults)
+    }
+
+    override fun getMetricsSupport(): OnDemandMetricsSupportable {
+        TODO("Not yet implemented")
     }
 
     abstract fun getItems(): List<T>
