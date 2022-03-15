@@ -16,7 +16,7 @@
     "@uirouter/core": "6.0.4",
     "@uirouter/react": "1.0.2",
     "husky": "4.2.5",
-    "lodash-es": "4.17.15",
+    "lodash-es": "4.17.21",
     "lodash": "^4.17.19",
     "pretty-quick": "2.0.1",
     "prop-types": "15.6.1",
